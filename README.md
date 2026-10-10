@@ -6,7 +6,7 @@
 
 BazarDor is a user-friendly Bengali web platform that brings essential product prices, category-based browsing, market comparisons, and price trends together in one convenient place.
 
-[🌐 Live Demo](https://bajar-dor-seven.vercel.app/products/22) · [💻 GitHub Repository](https://github.com/shamsu082277/bajar-dor)
+[🌐 Live Demo](https://bajar-dor-seven.vercel.app) · [💻 GitHub Repository](https://github.com/shamsu082277/bajar-dor)
 
 ![Next.js](https://img.shields.io/badge/Next.js-App_Router-black?logo=next.js)
 ![React](https://img.shields.io/badge/React-UI-61DAFB?logo=react)
