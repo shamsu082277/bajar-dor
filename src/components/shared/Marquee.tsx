@@ -30,7 +30,7 @@ const Marquee = async () => {
           <MarqueeText
             direction="right"
             pauseOnHover={true}
-            duration={35}
+            duration={20}
           >
             <div className="flex w-max items-center py-3">
               {[...products, ...products].map(

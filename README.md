@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🛒 বাজার দর | BazarDor
 
-## Getting Started
+<div align="center">
 
-First, run the development server:
+### বাংলাদেশের নিত্যপ্রয়োজনীয় পণ্যের বাজারদর জানুন সহজেই।
+
+A modern, responsive Bengali-language web application that helps users explore everyday product prices, browse categories, track price trends, and compare prices across different markets.
+
+[🌐 Live Demo](YOUR_LIVE_URL) · [💻 GitHub Repository](YOUR_GITHUB_REPOSITORY_URL)
+
+![Next.js](https://img.shields.io/badge/Next.js-App_Router-black?logo=next.js)
+![React](https://img.shields.io/badge/React-UI-61DAFB?logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-Type_Safe-3178C6?logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-Styling-06B6D4?logo=tailwindcss)
+
+</div>
+
+---
+
+## 📖 About the Project
+
+**BazarDor (বাজার দর)** is a web application built to make essential product price information more accessible to Bengali-speaking users in Bangladesh. It provides a simple and user-friendly interface for browsing products, exploring price movements, comparing market-wise prices, and managing user accounts.
+
+## ✨ Key Features
+
+* 📈 **Price Trends** — Explore products with increasing and decreasing prices.
+* 🗂️ **Category-Based Browsing** — Discover products organized into different categories.
+* ↕️ **Product Sorting** — Sort products by default order, lowest price, or highest price.
+* 🛍️ **Product Details & Price Comparison** — View product information, price summaries, and market-wise prices.
+* 🔐 **Authentication & Profile Management** — Register, sign in with email or configured social providers, and manage profile information.
+
+## 🧰 Technologies Used
+
+| Technology         | Purpose                               |
+| ------------------ | ------------------------------------- |
+| Next.js App Router | Application structure and routing     |
+| React              | Component-based user interface        |
+| TypeScript         | Type safety                           |
+| Tailwind CSS       | Responsive styling                    |
+| HeroUI             | UI components                         |
+| Better Auth        | Authentication and session management |
+| MongoDB            | Authentication data storage           |
+| Vercel             | Deployment and hosting                |
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+* Node.js
+* npm
+* MongoDB connection string for authentication
+
+### Installation
 
 ```bash
+# Clone the repository
+git clone YOUR_GITHUB_REPOSITORY_URL
+
+# Navigate to the project directory
+cd YOUR_REPOSITORY_NAME
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Configure the required environment variables in a `.env.local` file before using authentication features.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 👨‍💻 Developer
 
-## Learn More
+**Shamsu Uddin**
 
-To learn more about Next.js, take a look at the following resources:
+* GitHub: [@shamsu082277](https://github.com/shamsu082277)
+* LinkedIn: [linkedin.com/in/shamsu082277](https://www.linkedin.com/in/shamsu082277/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+<div align="center">
 
-## Deploy on Vercel
+**💚 বাজারদর জানুন, সচেতন সিদ্ধান্ত নিন।**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Made with ❤️ for Bengali-speaking users in Bangladesh.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+</div>

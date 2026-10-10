@@ -3,83 +3,91 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Button } from "@heroui/react";
 import { getBanglaDate } from "@/utils/dateConvertion";
 import { useSession } from "@/lib/auth-client";
 import UserProfile from "../Profile/UserProfile";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { data: session, isPending } = useSession();
 
-   const { data: session } = useSession();
+  const actionButtons = session ? (
+    <UserProfile />
+  ) : (
+    <>
+      <Link
+        href="/sign-in"
+        className="text-sm font-semibold text-gray-800 transition hover:text-green-700"
+      >
+        সাইন ইন
+      </Link>
 
-  const actionButtons = <>
-    <Link
-      href="/sign-in"
-      className="text-[15px] font-semibold text-gray-800 transition hover:text-green-700"
-    >
-      সাইন ইন
-    </Link>
-
-    <Link
-  href="/sign-up"
-  className="inline-flex h-10 w-[104px] items-center justify-center bg-green-700 text-[14px] rounded-md font-medium text-white shadow-sm transition hover:bg-green-800"
->
-  সাইন আপ
-</Link>
-  </>
+      <Link
+        href="/sign-up"
+        className="inline-flex h-10 items-center justify-center rounded-md bg-green-700 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-green-800"
+      >
+        সাইন আপ
+      </Link>
+    </>
+  );
 
   return (
     <nav className="w-full border-b border-gray-100 bg-white">
-      <header className="mx-auto flex h-[68px] max-w-[1164px] items-center justify-between px-4 sm:px-5">
-        {/* ================= LOGO ================= */}
+      <header className="mx-auto flex min-h-[68px] max-w-[1164px] items-center justify-between gap-3 px-3 sm:px-5">
+        {/* Logo */}
         <Link
           href="/"
-          className="flex items-center gap-2.5"
+          className="flex shrink-0 items-center gap-2.5"
         >
-          {/* Logo Icon */}
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[12px] bg-green-700">
-  <Image
-    src="/images/logo-icon.png"
-    alt="বাজার দর"
-    width={30}
-    height={30}
-    className="h-7 w-7 object-contain"
-    priority
-  />
-</div>
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-700 sm:h-12 sm:w-12">
+            <Image
+              src="/images/logo-icon.png"
+              alt="বাজার দর"
+              width={30}
+              height={30}
+              className="h-7 w-7 object-contain"
+              priority
+            />
+          </div>
 
-          {/* Logo Text */}
           <div className="flex flex-col justify-center">
-            <h1 className="text-[20px] font-bold leading-[20px] tracking-tight text-gray-900 sm:text-[21px]">
+            <h1 className="text-lg font-bold leading-5 tracking-tight text-gray-900 sm:text-xl">
               বাজার দর
             </h1>
 
-            <p className="mt-[3px] text-[11px] leading-[13px] text-gray-600 sm:text-[12px]">
+            <p className="mt-1 text-[10px] leading-3 text-gray-600 sm:text-xs">
               {getBanglaDate()}
             </p>
           </div>
         </Link>
 
-        {/* ================= DESKTOP ACTIONS ================= */}
-        <div className="hidden items-center gap-5 sm:flex">
-          {/* {actionButtons} */}
-          {
-            session ? <UserProfile /> : actionButtons
-          }
+        {/* Desktop and Tablet Actions */}
+        <div className="hidden items-center gap-4 md:flex lg:gap-5">
+          {!isPending && actionButtons}
         </div>
 
-        {/* ================= MOBILE MENU BUTTON ================= */}
-        <div className="flex items-center gap-2 sm:hidden">
+        {/* Mobile and Small Tablet Controls */}
+        <div className="flex shrink-0 items-center gap-2 md:hidden">
+          {!isPending && session && (
+            <div className="max-w-[150px]">
+              <UserProfile />
+            </div>
+          )}
 
-          {actionButtons}
-
+          {!isPending && !session && (
+            <Link
+              href="/sign-in"
+              className="rounded-md px-2 py-2 text-xs font-semibold text-gray-800 hover:bg-gray-50 sm:px-3 sm:text-sm"
+            >
+              সাইন ইন
+            </Link>
+          )}
 
           <button
             type="button"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="flex h-9 w-9 items-center justify-center rounded-md text-gray-700 hover:bg-gray-100"
-            aria-label="Toggle menu"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-gray-700 transition hover:bg-gray-100"
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? (
@@ -115,33 +123,48 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ================= MOBILE MENU ================= */}
+      {/* Responsive Navigation Menu */}
       {isMenuOpen && (
-        <div className="border-t border-gray-100 bg-white sm:hidden">
-          <div className="mx-auto max-w-[1130px] px-5 py-4">
+        <div className="border-t border-gray-100 bg-white md:hidden">
+          <div className="mx-auto max-w-[1164px] px-4 py-3 sm:px-5">
             <div className="flex flex-col">
               <Link
                 href="/"
                 onClick={() => setIsMenuOpen(false)}
-                className="border-b border-gray-100 py-3 text-sm font-medium text-gray-800"
+                className="border-b border-gray-100 py-3 text-sm font-medium text-gray-800 transition hover:text-green-700"
               >
                 হোম
               </Link>
-              <Link
-                href="/profile"
-                onClick={() => setIsMenuOpen(false)}
-                className="border-b border-gray-100 py-3 text-sm font-medium text-gray-800"
-              >
-                প্রোফাইল
-              </Link>
 
-              <Link
-                href="/sign-in"
-                onClick={() => setIsMenuOpen(false)}
-                className="mt-3 py-2 text-center text-sm font-semibold text-gray-800"
-              >
-                সাইন ইন
-              </Link>
+              {session && (
+                <Link
+                  href="/profile"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="border-b border-gray-100 py-3 text-sm font-medium text-gray-800 transition hover:text-green-700"
+                >
+                  প্রোফাইল
+                </Link>
+              )}
+
+              {!isPending && !session && (
+                <>
+                  <Link
+                    href="/sign-in"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="border-b border-gray-100 py-3 text-sm font-semibold text-gray-800"
+                  >
+                    সাইন ইন
+                  </Link>
+
+                  <Link
+                    href="/sign-up"
+                    onClick={() => setIsMenuOpen(false)}
+                    className="mt-3 flex h-10 items-center justify-center rounded-md bg-green-700 text-sm font-semibold text-white transition hover:bg-green-800"
+                  >
+                    সাইন আপ
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
