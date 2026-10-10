@@ -1,32 +1,33 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { Suspense, useEffect, useState, useRef } from "react";
 import { signOut, useSession } from "@/lib/auth-client";
 import { toast } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const ProfilePage = () => {
+const ProfileContent = () => {
   const { data: session, isPending } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [isSigningOut, setIsSigningOut] = useState(false);
   const toastShown = useRef(false);
+
   // Show success toast only after redirecting to this page
   useEffect(() => {
-  if (
-    searchParams.get("updated") === "success" &&
-    !toastShown.current
-  ) {
-    toastShown.current = true;
+    if (
+      searchParams.get("updated") === "success" &&
+      !toastShown.current
+    ) {
+      toastShown.current = true;
 
-    toast.success("প্রোফাইল আপডেট সফল", {
-      description: "আপনার নাম সফলভাবে পরিবর্তন হয়েছে।",
-    });
+      toast.success("প্রোফাইল আপডেট সফল", {
+        description: "আপনার নাম সফলভাবে পরিবর্তন হয়েছে।",
+      });
 
-    router.replace("/profile", { scroll: false });
-  }
-}, [searchParams, router]);
+      router.replace("/profile", { scroll: false });
+    }
+  }, [searchParams, router]);
 
   // Sign out
   const handleSignOut = async () => {
@@ -66,8 +67,9 @@ const ProfilePage = () => {
 
   // Protect profile route
   if (!session?.user) {
-    router.replace("/sign-in?reason=auth-required");
-    return null;
+    return (
+      <ProfileRedirect />
+    );
   }
 
   return (
@@ -143,6 +145,31 @@ const ProfilePage = () => {
         </section>
       </div>
     </main>
+  );
+};
+
+// Redirect unauthenticated users
+const ProfileRedirect = () => {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/sign-in?reason=auth-required");
+  }, [router]);
+
+  return null;
+};
+
+const ProfilePage = () => {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-[calc(100vh-68px)] items-center justify-center bg-[#f4f7f3] px-4">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-200 border-t-green-700" />
+        </main>
+      }
+    >
+      <ProfileContent />
+    </Suspense>
   );
 };
 
