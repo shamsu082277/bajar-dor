@@ -2,9 +2,9 @@
 
 <div align="center">
 
-### বাংলাদেশের নিত্যপ্রয়োজনীয় পণ্যের বাজারদর জানুন সহজেই।
+### নিত্যপ্রয়োজনীয় পণ্যের দাম জানুন, বাজার করুন আরও সচেতনভাবে।
 
-A modern, responsive Bengali-language web application that helps users explore everyday product prices, browse categories, track price trends, and compare prices across different markets.
+BazarDor is a user-friendly Bengali web platform that brings essential product prices, category-based browsing, market comparisons, and price trends together in one convenient place.
 
 [🌐 Live Demo](YOUR_LIVE_URL) · [💻 GitHub Repository](YOUR_GITHUB_REPOSITORY_URL)
 
@@ -78,11 +78,3 @@ Configure the required environment variables in a `.env.local` file before using
 * LinkedIn: [linkedin.com/in/shamsu082277](https://www.linkedin.com/in/shamsu082277/)
 
 ---
-
-<div align="center">
-
-**💚 বাজারদর জানুন, সচেতন সিদ্ধান্ত নিন।**
-
-Made with ❤️ for Bengali-speaking users in Bangladesh.
-
-</div>
