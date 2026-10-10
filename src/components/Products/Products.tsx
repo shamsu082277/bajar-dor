@@ -29,7 +29,7 @@ const Products = async () => {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {increasedProducts.map((product) => (
+          {increasedProducts.slice(0,6).map((product) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -49,7 +49,7 @@ const Products = async () => {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {decreasedProducts.map((product) => (
+          {decreasedProducts.slice(0,6).map((product) => (
             <ProductCard
               key={product.id}
               product={product}

@@ -1,23 +1,32 @@
-"use client"
-import { useEffect, useState } from "react";
-import { signOut, updateUser, useSession } from "@/lib/auth-client";
+"use client";
+
+import { useEffect, useState, useRef } from "react";
+import { signOut, useSession } from "@/lib/auth-client";
 import { toast } from "@heroui/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const ProfilePage = () => {
   const { data: session, isPending } = useSession();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const [name, setName] = useState("");
-  const [isUpdating, setIsUpdating] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
-
-  // Set the initial name from the authenticated session
+  const toastShown = useRef(false);
+  // Show success toast only after redirecting to this page
   useEffect(() => {
-    if (session?.user?.name) {
-      setName(session.user.name);
-    }
-  }, [session?.user?.name]);
+  if (
+    searchParams.get("updated") === "success" &&
+    !toastShown.current
+  ) {
+    toastShown.current = true;
+
+    toast.success("প্রোফাইল আপডেট সফল", {
+      description: "আপনার নাম সফলভাবে পরিবর্তন হয়েছে।",
+    });
+
+    router.replace("/profile", { scroll: false });
+  }
+}, [searchParams, router]);
 
   // Sign out
   const handleSignOut = async () => {
@@ -35,11 +44,6 @@ const ProfilePage = () => {
         return;
       }
 
-      toast.success("সাইন আউট সফল", {
-        description: "সফলভাবে সাইন আউট হয়েছে।",
-        timeout: 2000,
-      });
-
       router.push("/sign-in?logout=success");
       router.refresh();
     } catch {
@@ -51,60 +55,7 @@ const ProfilePage = () => {
     }
   };
 
-  // Update profile name
-  const handleUpdateUserInfo = async () => {
-    const trimmedName = name.trim();
-
-    if (!trimmedName) {
-      toast.danger("নাম দেওয়া আবশ্যক", {
-        description: "অনুগ্রহ করে আপনার নাম লিখুন।",
-      });
-      return;
-    }
-
-    if (trimmedName.length > 100) {
-      toast.danger("নাম অনেক বড়", {
-        description: "নাম সর্বোচ্চ ১০০ অক্ষরের হতে পারবে।",
-      });
-      return;
-    }
-
-    if (trimmedName === session?.user?.name) {
-      toast.info("কোনো পরিবর্তন করা হয়নি");
-      return;
-    }
-
-    setIsUpdating(true);
-
-    try {
-      const { error } = await updateUser({
-        name: trimmedName,
-      });
-
-      if (error) {
-        toast.danger("প্রোফাইল আপডেট ব্যর্থ", {
-          description: "আবার চেষ্টা করুন।",
-        });
-        return;
-      }
-
-      setName(trimmedName);
-
-      toast.success("প্রোফাইল আপডেট সফল", {
-        description: "আপনার নাম সফলভাবে পরিবর্তন হয়েছে।",
-      });
-
-      router.refresh();
-    } catch {
-      toast.danger("প্রোফাইল আপডেট ব্যর্থ", {
-        description: "একটি সমস্যা হয়েছে। আবার চেষ্টা করুন।",
-      });
-    } finally {
-      setIsUpdating(false);
-    }
-  };
-
-  // Session loading state
+  // Loading state
   if (isPending) {
     return (
       <main className="flex min-h-[calc(100vh-68px)] items-center justify-center bg-[#f4f7f3] px-4">
@@ -113,16 +64,15 @@ const ProfilePage = () => {
     );
   }
 
-  // Redirect unauthenticated users
+  // Protect profile route
   if (!session?.user) {
-    router.push("/sign-in?reason=auth-required");
+    router.replace("/sign-in?reason=auth-required");
     return null;
   }
 
   return (
     <main className="min-h-[calc(100vh-68px)] bg-[#f4f7f3] px-4 py-6 sm:px-5 sm:py-8">
       <div className="mx-auto max-w-[1164px]">
-
         {/* Page Header */}
         <div className="mb-5">
           <h1 className="text-[24px] font-bold leading-8 text-gray-900">
@@ -137,12 +87,26 @@ const ProfilePage = () => {
         {/* Profile Card */}
         <section className="rounded-xl border border-gray-200 bg-white px-5 py-4">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
             {/* User Information */}
             <div className="flex items-center gap-3">
-
               {/* Avatar */}
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-100"> {session.user.image ? ( <img src={session.user.image} alt={session.user.name ?? "User profile"} className="h-full w-full object-cover" referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.display = "none"; }} /> ) : ( <span className="text-xl font-semibold uppercase text-gray-500"> {session.user.name?.slice(0, 1) ?? "U"} </span> )} </div>
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-100">
+                {session.user.image ? (
+                  <img
+                    src={session.user.image}
+                    alt={session.user.name ?? "User profile"}
+                    className="h-full w-full object-cover"
+                    referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <span className="text-xl font-semibold uppercase text-gray-500">
+                    {session.user.name?.slice(0, 1) ?? "U"}
+                  </span>
+                )}
+              </div>
 
               {/* Name and Email */}
               <div>
@@ -156,57 +120,25 @@ const ProfilePage = () => {
               </div>
             </div>
 
-            {/* Sign Out */}
-            <button
-              onClick={handleSignOut}
-              type="button"
-              disabled={isSigningOut}
-              className="w-fit rounded-lg border border-red-400 px-4 py-2 text-[12px] font-medium text-red-500 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isSigningOut ? "সাইন আউট হচ্ছে..." : "← সাইন আউট"}
-            </button>
-          </div>
-        </section>
-
-        {/* Update Profile Card */}
-        <section className="mt-4 rounded-xl border border-gray-200 bg-white p-4 sm:p-5">
-          <h2 className="text-[17px] font-semibold text-gray-900">
-            তথ্য আপডেট
-          </h2>
-
-          <div className="mt-4 rounded-lg border border-gray-200 p-4 sm:p-5">
-
-            {/* Name Input */}
-            <div>
-              <label
-                htmlFor="name"
-                className="mb-2 block text-[12px] font-medium text-gray-700"
+            {/* Update and Sign Out Buttons */}
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => router.push("/profileUpdate")}
+                className="w-fit rounded-lg border border-green-700 px-3 py-2 text-[12px] font-medium text-green-700 transition hover:bg-green-50"
               >
-                নাম
-              </label>
+                ✎ আপডেট
+              </button>
 
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="আপনার নাম লিখুন"
-                maxLength={100}
-                autoComplete="name"
-                disabled={isUpdating}
-                className="h-10 w-full rounded-lg border border-gray-200 bg-white px-3 text-[13px] text-gray-900 outline-none transition focus:border-green-600 focus:ring-1 focus:ring-green-600 disabled:bg-gray-50"
-              />
+              <button
+                onClick={handleSignOut}
+                type="button"
+                disabled={isSigningOut}
+                className="w-fit rounded-lg border border-red-400 px-3 py-2 text-[12px] font-medium text-red-500 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {isSigningOut ? "সাইন আউট হচ্ছে..." : "← সাইন আউট"}
+              </button>
             </div>
-
-            {/* Update Button */}
-            <button
-              type="button"
-              onClick={handleUpdateUserInfo}
-              disabled={isUpdating || !name.trim()}
-              className="mt-3 h-10 w-full rounded-lg bg-green-700 text-[13px] font-semibold text-white shadow-sm transition hover:bg-green-800 disabled:cursor-not-allowed disabled:opacity-60"
-            >
-              {isUpdating ? "আপডেট হচ্ছে..." : "আপডেট"}
-            </button>
           </div>
         </section>
       </div>
@@ -215,3 +147,4 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+
