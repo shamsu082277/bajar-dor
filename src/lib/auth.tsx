@@ -2,33 +2,30 @@ import { betterAuth } from "better-auth";
 import { MongoClient } from "mongodb";
 import { mongodbAdapter } from "@better-auth/mongo-adapter";
 
-const client = new MongoClient(process.env.BETTER_AUTH_MONGODB_URI);
-// const db = client.db("product-explore-db");
-
 const mongoUri = process.env.BETTER_AUTH_MONGODB_URI;
 
 if (!mongoUri) {
-  throw new Error("BETTER_AUTH_MD_URI is not defined");
+  throw new Error("BETTER_AUTH_MONGODB_URI is not defined");
 }
 
 const client = new MongoClient(mongoUri);
-const db = client.db('bazar-dor-db');
+const db = client.db("bazar-dor-db");
 
 export const auth = betterAuth({
-    emailAndPassword: {
-        enabled: true,
+  emailAndPassword: {
+    enabled: true,
+  },
+  socialProviders: {
+    google: {
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     },
-    socialProviders: {
-        google: { 
-            clientId: process.env.GOOGLE_CLIENT_ID as string, 
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, 
-        },
-        github: { 
-            clientId: process.env.GITHUB_CLIENT_ID as string, 
-            clientSecret: process.env.GITHUB_CLIENT_SECRET as string, 
-        },   
+    github: {
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
     },
-    database: mongodbAdapter(db, {
-        client,
-    }),
+  },
+  database: mongodbAdapter(db, {
+    client,
+  }),
 });

@@ -102,7 +102,7 @@ const SignUp = () => {
                   </Label>
 
                   <Input
-                    placeholder="যেমন: আরিফ উদ্দিন"
+                    placeholder="যেমন: সামসূ উদ্দীন"
                     className="mt-1 h-8 rounded-lg border-gray-200 bg-white text-[14px]"
                   />
 
