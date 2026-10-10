@@ -6,22 +6,16 @@ import ProductList from "./ProductList";
 const Products = async () => {
   const products: IProduct[] = await getProducts();
 
-  const increasedProducts = products.filter(
-    (product) => product.today > product.yesterday
-  );
-
-  const decreasedProducts = products.filter(
-    (product) => product.today < product.yesterday
-  );
+  // Products with increased prices, sorted by highest increase percentage
+const increasedProducts = products .filter((product) => product.today > product.yesterday) .sort((a, b) => (b.change?.pct ?? 0) - (a.change?.pct ?? 0)) .slice(0, 6); 
+const decreasedProducts = products .filter((product) => product.today < product.yesterday) .sort((a, b) => (b.change?.pct ?? 0) - (a.change?.pct ?? 0)) .slice(0, 6);
 
   return (
     <section className="bg-[#f4f7f3] px-3 py-4 sm:px-5 sm:py-5">
       <div className="mx-auto max-w-[1164px]">
         {/* ================= PRICE INCREASE ================= */}
         <div className="mb-4 flex items-center gap-2">
-          <span className="text-[15px] text-red-600">
-            ▲
-          </span>
+          <span className="text-[15px] text-red-600">▲</span>
 
           <h2 className="text-[18px] font-bold text-gray-900 sm:text-[19px]">
             আজ দাম বেড়েছে
@@ -29,19 +23,14 @@ const Products = async () => {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {increasedProducts.slice(0,6).map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-            />
+          {increasedProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
         {/* ================= PRICE DECREASE ================= */}
         <div className="mb-4 mt-5 flex items-center gap-2">
-          <span className="text-[15px] text-green-600">
-            ▼
-          </span>
+          <span className="text-[15px] text-green-600">▼</span>
 
           <h2 className="text-[18px] font-bold text-gray-900 sm:text-[19px]">
             আজ দাম কমেছে
@@ -49,11 +38,8 @@ const Products = async () => {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {decreasedProducts.slice(0,6).map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-            />
+          {decreasedProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
@@ -65,3 +51,4 @@ const Products = async () => {
 };
 
 export default Products;
+
