@@ -5,7 +5,7 @@ import { ICategory, IProduct } from "@/types/products";
 export const getCategories = async (): Promise<ICategory[]> => {
   try {
     const response = await fetch(
-      "https://api.api-store.workers.dev/api/bazardor/categories",
+      "https://api.abcz.workers.dev/api/bazardor/categories",
       {
         next: {
           revalidate: 3600,
@@ -31,7 +31,7 @@ export const getCategory = async (
 ): Promise<IProduct[]> => {
   try {
     const response = await fetch(
-      `https://api.api-store.workers.dev/api/bazardor/products?category=${category}`,
+      `https://api.abcz.workers.dev/api/bazardor/products?category=${category}`,
       {
         next: {
           revalidate: 3600,

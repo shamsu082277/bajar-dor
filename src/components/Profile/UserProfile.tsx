@@ -31,9 +31,7 @@ const UserProfile = () => {
       >
         <div className="flex items-center gap-2.5">
           {/* Avatar */}
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-green-700 text-[11px] font-bold text-white">
-            {session?.user?.name.slice(0,1)}
-          </div>
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-100"> {session.user.image ? ( <img src={session.user.image} alt={session.user.name ?? "User profile"} className="w-10 object-cover" referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.display = "none"; }} /> ) : ( <span className="text-xl font-semibold uppercase text-gray-500"> {session.user.name?.slice(0, 1) ?? "U"} </span> )} </div>
 
           <span className="text-[14px] font-medium text-gray-800">
             {session?.user?.name}

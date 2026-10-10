@@ -3,7 +3,8 @@ import { IProduct } from "@/types/products";
 export const getProducts = async (): Promise<IProduct[]> => {
   try {
     const response = await fetch(
-      "https://api.api-store.workers.dev/api/bazardor/products",
+      "https://api.abcz.workers.dev/api/bazardor/products",
+      
       {
         next: {
           revalidate: 3600,
@@ -27,7 +28,7 @@ export const getProduct = async (
 ): Promise<IProduct | null> => {
   try {
     const response = await fetch(
-      `https://api.api-store.workers.dev/api/bazardor/products/${productId}`,
+      `https://api.abcz.workers.dev/api/bazardor/products/${productId}`,
       {
         next: {
           revalidate: 3600,

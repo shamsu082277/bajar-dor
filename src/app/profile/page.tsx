@@ -142,11 +142,7 @@ const ProfilePage = () => {
             <div className="flex items-center gap-3">
 
               {/* Avatar */}
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-100">
-                <span className="text-xl font-semibold uppercase text-gray-500">
-                  {session.user.name?.slice(0, 1) ?? "U"}
-                </span>
-              </div>
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-100"> {session.user.image ? ( <img src={session.user.image} alt={session.user.name ?? "User profile"} className="h-full w-full object-cover" referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.display = "none"; }} /> ) : ( <span className="text-xl font-semibold uppercase text-gray-500"> {session.user.name?.slice(0, 1) ?? "U"} </span> )} </div>
 
               {/* Name and Email */}
               <div>

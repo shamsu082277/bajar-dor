@@ -38,16 +38,16 @@ export default function Header() {
           className="flex items-center gap-2.5"
         >
           {/* Logo Icon */}
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] bg-green-700">
-            <Image
-              src="/images/logo-icon.png"
-              alt="বাজার দর"
-              width={40}
-              height={40}
-              className="h-full w-full object-cover"
-              priority
-            />
-          </div>
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[12px] bg-green-700">
+  <Image
+    src="/images/logo-icon.png"
+    alt="বাজার দর"
+    width={30}
+    height={30}
+    className="h-7 w-7 object-contain"
+    priority
+  />
+</div>
 
           {/* Logo Text */}
           <div className="flex flex-col justify-center">
@@ -71,6 +71,7 @@ export default function Header() {
 
         {/* ================= MOBILE MENU BUTTON ================= */}
         <div className="flex items-center gap-2 sm:hidden">
+
           {actionButtons}
 
 
@@ -126,23 +127,6 @@ export default function Header() {
               >
                 হোম
               </Link>
-
-              <Link
-                href="/market"
-                onClick={() => setIsMenuOpen(false)}
-                className="border-b border-gray-100 py-3 text-sm font-medium text-gray-800"
-              >
-                বাজার দর
-              </Link>
-
-              <Link
-                href="/news"
-                onClick={() => setIsMenuOpen(false)}
-                className="border-b border-gray-100 py-3 text-sm font-medium text-gray-800"
-              >
-                খবর
-              </Link>
-
               <Link
                 href="/profile"
                 onClick={() => setIsMenuOpen(false)}
