@@ -11,15 +11,19 @@ const UserProfile = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
-   const handleSignOut = async () => {
-        await signOut({
-            fetchOptions: {
-                onSuccess: () => {
-                    router.push("/sign-in");
-                },
-            },
-        });
-    }
+  const handleSignOut = async () => {
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/sign-in");
+        },
+      },
+    });
+  };
+
+  const userName = session?.user?.name ?? "User";
+  const userImage = session?.user?.image;
+  const userEmail = session?.user?.email;
 
   return (
     <div className="relative">
@@ -31,10 +35,26 @@ const UserProfile = () => {
       >
         <div className="flex items-center gap-2.5">
           {/* Avatar */}
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-100"> {session.user.image ? ( <img src={session.user.image} alt={session.user.name ?? "User profile"} className="w-10 object-cover" referrerPolicy="no-referrer" onError={(e) => { e.currentTarget.style.display = "none"; }} /> ) : ( <span className="text-xl font-semibold uppercase text-gray-500"> {session.user.name?.slice(0, 1) ?? "U"} </span> )} </div>
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-gray-100">
+            {userImage ? (
+              <img
+                src={userImage}
+                alt={userName}
+                className="h-10 w-10 object-cover"
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  e.currentTarget.style.display = "none";
+                }}
+              />
+            ) : (
+              <span className="text-xl font-semibold uppercase text-gray-500">
+                {userName.slice(0, 1)}
+              </span>
+            )}
+          </div>
 
           <span className="text-[14px] font-medium text-gray-800">
-            {session?.user?.name}
+            {userName}
           </span>
         </div>
 
@@ -52,36 +72,31 @@ const UserProfile = () => {
           {/* User Info */}
           <div className="border-b border-gray-100 px-5 py-4">
             <p className="text-[14px] font-medium text-gray-400">
-              {session?.user?.name}
+              {userName}
             </p>
 
             <p className="mt-1 text-[11px] text-gray-400">
-              {session?.user?.email}
+              {userEmail ?? ""}
             </p>
           </div>
 
           {/* Profile */}
-          <Link href="/profile"
+          <Link
+            href="/profile"
+            onClick={() => setIsOpen(false)}
             className="flex w-full items-center gap-2.5 px-5 py-2.5 text-left text-[14px] text-gray-800 transition hover:bg-gray-50"
           >
-            <UserRound
-              size={16}
-              className="text-purple-700"
-            />
-
+            <UserRound size={16} className="text-purple-700" />
             <span>আমার প্রোফাইল</span>
           </Link>
 
           {/* Sign Out */}
-          <button onClick={handleSignOut}
+          <button
+            onClick={handleSignOut}
             type="button"
             className="flex w-full items-center gap-2.5 px-5 pb-4 pt-1 text-left text-[14px] text-red-500 transition hover:bg-gray-50"
           >
-            <LogOut
-              size={16}
-              className="text-red-500"
-            />
-
+            <LogOut size={16} className="text-red-500" />
             <span>সাইন আউট</span>
           </button>
         </div>
@@ -91,3 +106,4 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
+
